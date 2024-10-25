@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	db "github.com/LMS/DB"
 	"github.com/LMS/utils"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -19,6 +20,11 @@ func main() {
 		log.Fatalf("Error loading environment variables file")
 	}
 	PORT := os.Getenv("PORT")
+
+	client := db.ConnectMongoDB()
+	db := client.Database("LMS")
+	collection := db.Collection("User")
+	log.Println("Database and collection accessed:", collection.Name())
 
 	route := echo.New()
 
