@@ -17,4 +17,15 @@ func RegisterRoutes(e *echo.Echo) {
 	admin.PUT("/forget", api.AdminForgetPassword)
 	admin.DELETE("", api.DeleteAdmin)
 
+	admin.GET("/student/:mis", api.GetStudentWithoutPassword)
+	admin.POST("/assign/:mis/:bookId", api.AddBookToStudent)
+
+	student := e.Group("/student")
+	student.POST("", api.CreateStudent)
+	student.PUT("/name-phone", api.UpdateStudentNamePhone)
+	student.PUT("/password", api.UpdateStudentPassword)
+	student.GET("/password", api.GetStudentWithPassword)
+	student.GET("/dues-penality/:mis", api.GetStudentPenalityDues)
+	student.GET("/books/:mis", api.GetBooksAssociateWithStudent)
+
 }
