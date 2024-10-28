@@ -2,7 +2,7 @@ package model
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-type User struct {
+type Student struct {
 	ID            primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	Name          string             `json:"name,omitempty" bson:"name,omitempty"`
 	Email         string             `json:"email,omitempty" bson:"email,omitempty"`
@@ -13,4 +13,7 @@ type User struct {
 	Course        string             `json:"course,omitempty" bson:"course,omitempty"`
 	TotalPenality float32            `json:"totalPenality,omitempty" bson:"totalPenality,omitempty"`
 	Books         []string           `json:"books,omitempty" bson:"books,omitempty"`
+	Dues          float32            `json:"dues,omitempty" bson:"dues,omitempty"`
+	CreatedAt     primitive.DateTime `json:"createdAt,omitempty" bson:"createdAt,omitempty"`
+	UpdatedAt     primitive.DateTime `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`
 }
