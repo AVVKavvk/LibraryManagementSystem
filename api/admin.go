@@ -73,7 +73,7 @@ func GetAdmin(ctx echo.Context) error {
 		return utils.Error(ctx, http.StatusInternalServerError, err.Error())
 
 	}
-
+	admin.Password=""
 	return utils.Success(ctx, http.StatusOK, "Admin login successfully", admin)
 }
 
@@ -210,4 +210,25 @@ func AdminForgetPassword(ctx echo.Context) error {
 	// implement later with OTP
 
 	return nil
+}
+
+func GetAdminByID(ctx echo.Context) error  {
+	var admin model.Admin
+	_id:=ctx.Param("id")
+
+	if _id==""{
+		return utils.Error(ctx, http.StatusInsufficientStorage, "Please login again")
+	}
+	filter:=bson.M{"_id":_id}
+
+	err:= Admin.FindOne(ctx.Request().Context(),filter).Decode(&admin)
+
+	if err!=nil{
+		if _id==""{
+			return utils.Error(ctx, http.StatusInsufficientStorage, "Please login again")
+		}
+	}
+	admin.Password=""
+
+	return utils.Success(ctx, http.StatusOK,"Profile",admin)
 }
