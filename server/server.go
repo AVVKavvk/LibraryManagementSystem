@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	db "github.com/AVVKavvk/LMS/DB"
@@ -24,18 +25,21 @@ func init() {
 	DB = Client.Database("LMS")
 }
 
-func Server() {
+// Server returns an initialized Echo instance as an http.Handler
+func Server() http.Handler {
 	PORT := os.Getenv("PORT")
 	ClientURL := os.Getenv("ClientURL")
 
 	route := echo.New()
 
+	// Logger middleware
 	route.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format:           `${time_custom} [INFO] [<NONE>, ${path}]: {"http_method": "${method}", "http_ip": "${remote_ip}", "http_status": ${status}, "http_latency": ${latency}, "http_agent": "${user_agent}", "http_error": "${error}", "http_path": "${path}", "http_bytes_in": ${bytes_in}, "http_bytes_out": ${bytes_out}}` + "\n",
 		CustomTimeFormat: "20060102150405.000",
 		Output:           os.Stdout,
 	}))
 
+	// CORS middleware
 	route.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{ClientURL},
 		AllowMethods:     []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
@@ -45,6 +49,6 @@ func Server() {
 	route.Use(middleware.RequestID())
 	router.RegisterRoutes(route)
 
-	fmt.Println("Server is running on port:", PORT)
-	route.Start(":" + PORT)
+	fmt.Println("Server is set up on port:", PORT)
+	return route
 }
