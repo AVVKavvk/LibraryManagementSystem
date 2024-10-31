@@ -1,11 +1,8 @@
 package router
 
 import (
-	"net/http"
-
 	"github.com/AVVKavvk/LMS/api"
 	"github.com/AVVKavvk/LMS/middleware"
-	"github.com/AVVKavvk/LMS/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -46,6 +43,6 @@ func RegisterRoutes(e *echo.Echo) {
 	e.POST("/login/admin", api.GetAdmin)
 	e.GET("/admin-profile/:id",api.GetAdminByID)
 	e.GET("/", func(ctx echo.Context) error {
-		return utils.Error(ctx, http.StatusBadRequest, "error")
+		return ctx.File("/index.html")
 	})
 }
