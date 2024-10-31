@@ -1,0 +1,22 @@
+{
+  "build": {
+    "env": {
+      "GO_BUILD_FLAGS": "-ldflags '-s -w'"
+    }
+  },
+  "functions": {
+    "main.go": {
+      "handler": "Handler",
+      "runtime": "vercel-go@0.5.0",
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "PORT": "8080",
+    "ClientURL": "https://your-client-url.com"
+  }
+}
+  }
+}
+

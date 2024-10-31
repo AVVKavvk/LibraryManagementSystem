@@ -1,8 +1,11 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/AVVKavvk/LMS/api"
 	"github.com/AVVKavvk/LMS/middleware"
+	"github.com/AVVKavvk/LMS/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -10,12 +13,13 @@ func RegisterRoutes(e *echo.Echo) {
 
 	admin := e.Group("/admin", middleware.IsAdmin())
 	admin.POST("", api.CreateAdmin)
-	admin.GET("", api.GetAdmin)
 	admin.GET("/all", api.GetAllAdmin)
 	admin.PUT("", api.UpdateAdminNamePassword)
 	admin.PUT("/password", api.UpdateAdminPassword)
 	admin.PUT("/forget", api.AdminForgetPassword)
 	admin.DELETE("", api.DeleteAdmin)
+
+	e.POST("/login/admin", api.GetAdmin)
 
 	admin.GET("/student/:mis", api.GetStudentWithoutPassword)
 	admin.POST("/assign/:mis/:bookId", api.AddBookToStudent)
@@ -30,17 +34,17 @@ func RegisterRoutes(e *echo.Echo) {
 	student.POST("", api.CreateStudent)
 	student.PUT("/name-phone", api.UpdateStudentNamePhone)
 	student.PUT("/password", api.UpdateStudentPassword)
-	student.GET("/password", api.GetStudentWithPassword)
+	student.POST("/password", api.GetStudentWithPassword)
 	student.GET("/dues-penality/:mis", api.GetStudentPenalityDues)
 	student.GET("/books/:mis", api.GetBooksAssociateWithStudent)
 
 	book := e.Group("/book")
 	book.GET("/:bookId", api.GetBookByID)
 	book.GET("/student/:bookId", api.GetAllMISAssociateWithBook)
-	book.GET("/:course", api.GetBooksByCourse)
+	book.GET("/course/:course", api.GetBooksByCourse)
 	book.GET("/:course/:sem", api.GetBooksBySemWithCourse)
 
 	e.GET("/", func(ctx echo.Context) error {
-		return ctx.File("./index.html")
+		return utils.Error(ctx, http.StatusBadRequest, "error")
 	})
 }
