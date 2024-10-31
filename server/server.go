@@ -26,7 +26,7 @@ func init() {
 
 func Server() {
 	PORT := os.Getenv("PORT")
-	ClientURL := os.Getenv("ClientURL")
+	// ClientURL := os.Getenv("ClientURL")
 
 	route := echo.New()
 
@@ -37,7 +37,7 @@ func Server() {
 	}))
 
 	route.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{ClientURL},
+		AllowOrigins:     []string{"https://librohub.onrender.com"},
 		AllowMethods:     []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
 		AllowCredentials: true,
 	}))
