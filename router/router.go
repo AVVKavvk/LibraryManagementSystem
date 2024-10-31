@@ -44,5 +44,6 @@ func RegisterRoutes(e *echo.Echo) {
 	e.GET("/admin-profile/:id",api.GetAdminByID)
 	e.GET("/", func(ctx echo.Context) error {
 		return ctx.File("./index.html")
+
 	})
 }
