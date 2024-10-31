@@ -74,7 +74,7 @@ func GetAdmin(ctx echo.Context) error {
 
 	}
 
-	return utils.Success(ctx, http.StatusOK, "Admin found", admin)
+	return utils.Success(ctx, http.StatusOK, "Admin login successfully", admin)
 }
 
 func UpdateAdminNamePassword(ctx echo.Context) error {

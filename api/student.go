@@ -159,7 +159,7 @@ func GetStudentWithPassword(ctx echo.Context) error {
 	err := Student.FindOne(ctx.Request().Context(), filter).Decode(&student)
 
 	if err != nil {
-		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintf("Student not found with MIS : %s", student.MIS))
+		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintf("Student not found with MIS : %s , check your mis or password", student.MIS))
 	}
 
 	return utils.Success(ctx, http.StatusOK, "Stduent found", student)
