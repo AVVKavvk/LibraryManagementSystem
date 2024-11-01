@@ -212,23 +212,27 @@ func AdminForgetPassword(ctx echo.Context) error {
 	return nil
 }
 
-func GetAdminByID(ctx echo.Context) error  {
+func GetAdminByID(ctx echo.Context) error {
 	var admin model.Admin
-	_id:=ctx.Param("id")
-
-	if _id==""{
-		return utils.Error(ctx, http.StatusInsufficientStorage, "Please login again")
+	_id := ctx.Param("id")
+	
+	if _id == "" {
+			return utils.Error(ctx, http.StatusUnauthorized, "Please login again")
 	}
-	filter:=bson.M{"_id":_id}
 
-	err:= Admin.FindOne(ctx.Request().Context(),filter).Decode(&admin)
-
-	if err!=nil{
-		if _id==""{
-			return utils.Error(ctx, http.StatusInsufficientStorage, "Please login again")
-		}
+	objectID, err := primitive.ObjectIDFromHex(_id)
+	if err != nil {
+			return utils.Error(ctx, http.StatusBadRequest, "Invalid ID format")
 	}
-	admin.Password=""
 
-	return utils.Success(ctx, http.StatusOK,"Profile",admin)
+	filter := bson.M{"_id": objectID}
+	err = Admin.FindOne(ctx.Request().Context(), filter).Decode(&admin)
+
+	if err != nil {
+			return utils.Error(ctx, http.StatusNotFound, "Admin not found, login please")
+	}
+
+	admin.Password = ""
+
+	return utils.Success(ctx, http.StatusOK, "Profile", admin)
 }

@@ -9,7 +9,7 @@ type Book struct {
 	Course    string             `json:"course,omitempty" bson:"course,omitempty"`
 	Sem       string             `json:"sem,omitempty" bson:"sem,omitempty"`
 	Count     int                `json:"count,omitempty" bson:"count,omitempty"`
-	Penality  float32            `json:"penality,omitempty" bson:"penality,omitempty"`
+	Penalty  float32            `json:"penalty,omitempty" bson:"penalty,omitempty"`
 	Students  []string           `json:"students,omitempty" bson:"students,omitempty"`
 	CreatedAt primitive.DateTime `json:"createdAt,omitempty" bson:"createdAt,omitempty"`
 	UpdatedAt primitive.DateTime `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`

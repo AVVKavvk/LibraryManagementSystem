@@ -30,13 +30,14 @@ func Server() {
 
 	route := echo.New()
 
-	route.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format:           `${time_custom} [INFO] [<NONE>, ${path}]: {"http_method": "${method}", "http_ip": "${remote_ip}", "http_status": ${status}, "http_latency": ${latency}, "http_agent": "${user_agent}", "http_error": "${error}", "http_path": "${path}", "http_bytes_in": ${bytes_in}, "http_bytes_out": ${bytes_out}}` + "\n",
-		CustomTimeFormat: "20060102150405.000",
-		Output:           os.Stdout,
-	}))
+	// route.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+	// 	Format:           `${time_custom} [INFO] [<NONE>, ${path}]: {"http_method": "${method}", "http_ip": "${remote_ip}", "http_status": ${status}, "http_latency": ${latency}, "http_agent": "${user_agent}", "http_error": "${error}", "http_path": "${path}", "http_bytes_in": ${bytes_in}, "http_bytes_out": ${bytes_out}}` + "\n",
+	// 	CustomTimeFormat: "20060102150405.000",
+	// 	Output:           os.Stdout,
+	// }))
 
 	route.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		// AllowOrigins:     []string{ClientURL},
 		AllowOrigins:     []string{"https://librohub.onrender.com"},
 		AllowMethods:     []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
 		AllowCredentials: true,
