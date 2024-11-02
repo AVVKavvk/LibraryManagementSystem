@@ -11,10 +11,10 @@ func RegisterRoutes(e *echo.Echo) {
 	admin := e.Group("/admin", middleware.IsAdmin())
 	admin.POST("", api.CreateAdmin)
 	admin.GET("/all", api.GetAllAdmin)
-	admin.PUT("", api.UpdateAdminNamePassword)
+	admin.PUT("", api.UpdateAdminNamePhone)
 	admin.PUT("/password", api.UpdateAdminPassword)
 	admin.PUT("/forget", api.AdminForgetPassword)
-	admin.DELETE("", api.DeleteAdmin)
+	admin.DELETE("/:email/:password", api.DeleteAdmin)
 
 	admin.GET("/student/:mis", api.GetStudentWithoutPassword)
 	admin.POST("/assign/:mis/:bookId", api.AddBookToStudent)
@@ -26,10 +26,8 @@ func RegisterRoutes(e *echo.Echo) {
 	
 
 	student := e.Group("/student", middleware.IsAuthorized())
-	student.POST("", api.CreateStudent)
 	student.PUT("/name-phone", api.UpdateStudentNamePhone)
 	student.PUT("/password", api.UpdateStudentPassword)
-	student.POST("/password", api.GetStudentWithPassword)
 	student.GET("/dues-penality/:mis", api.GetStudentPenalityDues)
 	student.GET("/books/:mis", api.GetBooksAssociateWithStudent)
 	
@@ -39,17 +37,19 @@ func RegisterRoutes(e *echo.Echo) {
 	book.GET("/course/:course", api.GetBooksByCourse)
 	book.GET("/:course/:sem", api.GetBooksBySemWithCourse)
 	
-
+	
 	all:=e.Group("/",middleware.IsAuthorized())
-	all.POST("login/admin", api.GetAdmin)
+	// all.POST("login/admin", api.GetAdmin)
 	all.GET("admin-profile/:id", api.GetAdminByID)
 	all.GET("books", api.GetAllBooks)
-
-	// e.POST("/login/admin", api.GetAdmin)
+	
 	// e.GET("/admin-profile/:id",api.GetAdminByID, middleware.IsAdmin())
 	// e.GET("/books", api.GetAllBooks,middleware.IsAuthorized())
-
-
+	
+	
+	e.POST("/signup/student", api.CreateStudent)
+	e.POST("/login/student", api.GetStudentWithPassword)
+	e.POST("/login/admin", api.GetAdmin)
 	e.GET("/", func(ctx echo.Context) error {
 		return ctx.File("./index.html")
 
