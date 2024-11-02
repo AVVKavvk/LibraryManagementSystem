@@ -77,7 +77,7 @@ func GetAdmin(ctx echo.Context) error {
 	return utils.Success(ctx, http.StatusOK, "Admin login successfully", admin)
 }
 
-func UpdateAdminNamePassword(ctx echo.Context) error {
+func UpdateAdminNamePhone(ctx echo.Context) error {
 	var admin model.Admin
 	if err := ctx.Bind(&admin); err != nil {
 		return utils.Error(ctx, http.StatusBadRequest, err.Error())
@@ -116,10 +116,11 @@ func UpdateAdminNamePassword(ctx echo.Context) error {
 func DeleteAdmin(ctx echo.Context) error {
 	var admin model.Admin
 
-	if err := ctx.Bind(&admin); err != nil {
-		return utils.Error(ctx, http.StatusBadRequest, err.Error())
-	}
-
+	email:=ctx.Param("email")
+	password:=ctx.Param("password")
+	admin.Email=email
+	admin.Password=password
+	
 	if admin.Email == "" || admin.Password == "" {
 		return utils.Error(ctx, http.StatusBadRequest, "Email, Password are required")
 	}
@@ -154,6 +155,8 @@ func GetAllAdmin(ctx echo.Context) error {
 	for cursor.Next(ctx.Request().Context()) {
 		var admin model.Admin
 		cursor.Decode(&admin)
+
+		admin.Password = ""
 		admins = append(admins, admin)
 	}
 	return utils.Success(ctx, http.StatusOK, "All Admins", admins)

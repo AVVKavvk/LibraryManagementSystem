@@ -48,6 +48,7 @@ func CreateBook(ctx echo.Context) error {
 }
 
 func UpdateBookCount(ctx echo.Context) error {
+	fmt.Println("viiii")
 	type BookCount struct {
 		Count int `json:"count"`
 	}
@@ -62,6 +63,12 @@ func UpdateBookCount(ctx echo.Context) error {
 	if bookId == "" {
 		return utils.Error(ctx, http.StatusBadRequest, "BookId requried")
 	}
+	if count.Count<= 0 {
+		return utils.Error(ctx, http.StatusBadRequest, "Book count should be 1 or more")
+	}
+
+	fmt.Println(bookId, count)
+
 	filter := bson.M{"bookId": bookId}
 
 	err := Book.FindOne(ctx.Request().Context(), filter).Decode(&book)
@@ -85,7 +92,6 @@ func UpdateBookCount(ctx echo.Context) error {
 	}
 
 	return utils.Success(ctx, http.StatusOK, "Book count updated ", echo.Map{"count": totalBook})
-
 }
 
 func GetBookByID(ctx echo.Context) error {
@@ -159,7 +165,6 @@ func GetAllMISAssociateWithBook(ctx echo.Context) error {
 	}
 
 	return utils.Success(ctx, http.StatusOK, "Success", MISNumbers)
-
 }
 
 func AssignBookToStudent(ctx echo.Context) error {
@@ -367,7 +372,7 @@ func GetBooksBySemWithCourse(ctx echo.Context) error {
 		}
 	}
 	if len(books) == 0 {
-		return utils.Error(ctx, http.StatusInternalServerError, "No books find for this course")
+		return utils.Error(ctx, http.StatusInternalServerError, "No books find for this course and sem")
 	}
 	return utils.Success(ctx, http.StatusOK, "Successfully", books)
 }
