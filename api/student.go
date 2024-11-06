@@ -184,8 +184,8 @@ func GetStudentWithoutPassword(ctx echo.Context) error {
 		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintf("Student not found with MIS : %s", mis))
 	}
 
-	return utils.Success(ctx, http.StatusOK, "Stdeunt found", student)
-
+	student.Password = ""
+	return utils.Success(ctx, http.StatusOK, "Success", student)
 }
 
 func GetStudentPenalityDues(ctx echo.Context) error {
@@ -204,7 +204,7 @@ func GetStudentPenalityDues(ctx echo.Context) error {
 		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintf("Student not found with MIS : %s", mis))
 	}
 
-	return utils.Success(ctx, http.StatusOK, "success", map[string]interface{}{"penality": student.TotalPenality, "dues": student.Dues})
+	return utils.Success(ctx, http.StatusOK, "success", map[string]interface{}{"penalty": student.TotalPenalty, "dues": student.Dues})
 }
 
 func GetBooksAssociateWithStudent(ctx echo.Context) error {
