@@ -11,7 +11,7 @@ type Student struct {
 	MIS           string             `json:"mis,omitempty" bson:"mis,omitempty"`
 	Sem           string             `json:"sem,omitempty" bson:"sem,omitempty"`
 	Course        string             `json:"course,omitempty" bson:"course,omitempty"`
-	TotalPenality float32            `json:"totalPenality,omitempty" bson:"totalPenality,omitempty"`
+	TotalPenalty float32            `json:"totalPenalty,omitempty" bson:"totalPenalty,omitempty"`
 	Books         []string           `json:"books,omitempty" bson:"books,omitempty"`
 	Dues          float32            `json:"dues,omitempty" bson:"dues,omitempty"`
 	CreatedAt     primitive.DateTime `json:"createdAt,omitempty" bson:"createdAt,omitempty"`
