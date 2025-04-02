@@ -30,6 +30,9 @@ func IsAuthorized() echo.MiddlewareFunc {
 			}
 
 			var student model.Student
+			// hash := sha256.New()
+			// hash.Write([]byte(student.Password))
+			// student.Password = hex.EncodeToString(hash.Sum(nil))
 			err = api.Student.FindOne(c.Request().Context(), filter).Decode(&student)
 			if err == nil {
 				return next(c)

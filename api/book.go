@@ -48,7 +48,7 @@ func CreateBook(ctx echo.Context) error {
 }
 
 func UpdateBookCount(ctx echo.Context) error {
-	fmt.Println("viiii")
+	// fmt.Println("viiii")
 	type BookCount struct {
 		Count int `json:"count"`
 	}
@@ -173,9 +173,10 @@ func AssignBookToStudent(ctx echo.Context) error {
 
 	bookId := ctx.QueryParam("bookId")
 	mis := ctx.QueryParam("mis")
+	day := ctx.QueryParam("day")
 
-	if bookId == "" || mis == "" {
-		return utils.Error(ctx, http.StatusBadRequest, "BookId and MIS required")
+	if bookId == "" || mis == "" || day==""{
+		return utils.Error(ctx, http.StatusBadRequest, "BookId ,day and MIS required")
 	}
 
 	filter := bson.M{"bookId": bookId}
@@ -232,7 +233,11 @@ func AssignBookToStudent(ctx echo.Context) error {
 	if err != nil {
 		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintln("Book not assigned to student due to error %s", err.Error()))
 	}
-
+	err = AddEntryInIssued(&book,&student,day)
+	
+	if err != nil {
+		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintln("Book not assigned to student due to error %s", err.Error()))
+	}
 	return utils.Success(ctx, http.StatusOK, "Book assigned successfully", fmt.Sprintf("Remaining books with book ID %s is %d", bookId, newCount))
 }
 
@@ -312,9 +317,15 @@ func DeleteBookFromStudent(ctx echo.Context) error {
 	if err != nil {
 		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintf("Student with MIS %s, not deleted form book with ID", mis, bookId))
 	}
+	
+	err = RemoveEntryInIssued(bookId,mis)
 
+	if err != nil {
+		return utils.Error(ctx, http.StatusBadRequest, fmt.Sprintf("Student with MIS %s, not deleted form book with ID", mis, bookId))
+	}
 	return utils.Success(ctx, http.StatusOK, "Book deleted successfully from student", fmt.Sprintf("Remaining books with book ID %s is %d", bookId, newBookCount))
 }
+
 
 func GetBooksByCourse(ctx echo.Context) error {
 	var books []model.Book
