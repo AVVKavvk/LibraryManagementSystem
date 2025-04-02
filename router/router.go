@@ -42,6 +42,11 @@ func RegisterRoutes(e *echo.Echo) {
 	// all.POST("login/admin", api.GetAdmin)
 	all.GET("admin-profile/:id", api.GetAdminByID)
 	all.GET("books", api.GetAllBooks)
+	all.GET("assigned-books", api.GetIssuedBooks)
+	all.GET("assigned/book/:bookId", api.FindAssignBookByBookId)
+	all.GET("assigned/mis/:mis", api.FindAssignBookByMIS)
+	all.GET("due-books/:days", api.GetDueBooks)
+	all.GET("expiry-books", api.GetExpiryBooks)
 	
 	// e.GET("/admin-profile/:id",api.GetAdminByID, middleware.IsAdmin())
 	// e.GET("/books", api.GetAllBooks,middleware.IsAuthorized())

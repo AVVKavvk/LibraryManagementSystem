@@ -10,7 +10,7 @@ type Issued struct {
 	StudentId   string             `json:"studentId,omitempty" bson:"studentId,omitempty"`
 	IssueDate   primitive.DateTime `json:"issueDate,omitempty" bson:"issueDate,omitempty"`
 	ReturnDate  primitive.DateTime `json:"returnDate,omitempty" bson:"returnDate,omitempty"`
-	Penality    float32            `json:"penality,omitempty" bson:"penality,omitempty"`
+	Penalty    float32            `json:"penalty,omitempty" bson:"penalty,omitempty"`
 	BookName    string             `json:"bookName,omitempty" bson:"bookName,omitempty"`
 	StudentName string             `json:"studentName,omitempty" bson:"studentName,omitempty"`
 }

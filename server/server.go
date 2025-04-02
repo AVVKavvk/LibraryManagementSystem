@@ -10,6 +10,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var Client *mongo.Client
@@ -26,7 +28,7 @@ func init() {
 
 func Server() {
 	PORT := os.Getenv("PORT")
-	// ClientURL := os.Getenv("ClientURL")
+	ClientURL := os.Getenv("ClientURL")
 
 	route := echo.New()
 
@@ -37,13 +39,14 @@ func Server() {
 	// }))
 
 	route.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		// AllowOrigins:     []string{ClientURL},
-		AllowOrigins:     []string{"https://librohub.onrender.com"},
+		AllowOrigins:     []string{ClientURL},
+		// AllowOrigins:     []string{"https://librohub.onrender.com"},
 		AllowMethods:     []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
 		AllowCredentials: true,
 	}))
 
 	route.Use(middleware.RequestID())
+	route.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	router.RegisterRoutes(route)
 
 	fmt.Println("Server is running on port:", PORT)
